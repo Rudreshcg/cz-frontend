@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avatar, Button } from '@mui/material';
+import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avatar, Button, useMediaQuery, useTheme } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -34,6 +34,14 @@ const headerStyles = {
         maxWidth: '300px',
         flexGrow: 1
     },
+    searchIcon: {
+        fontSize: '2rem',
+        color: '#6B6B6B',
+        backgroundColor: 'transparent',
+        borderRadius: '50%',
+        padding: '8px',
+        marginLeft: '5px'
+    },
     iconButton: {
         flexShrink: 0,
         '&:hover': {
@@ -67,14 +75,15 @@ const headerStyles = {
         '&:hover': {
             backgroundColor: 'black'
         }
-
-        
     }
 };
 
-const isLoggedIn = true
+const isLoggedIn = true;
 
 const Header: React.FC = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <>
             <AppBar position="static" sx={headerStyles.appBar}>
@@ -84,6 +93,11 @@ const Header: React.FC = () => {
                             <Typography variant='h4' sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>The Author</Typography>
                         </RouterLink>
                         {isLoggedIn && (
+                            <Box sx={headerStyles.searchBox} style={{ display: isMobile ? 'flex' : 'none' }}>
+                                <SearchIcon sx={{ backgroundColor: isMobile ? 'transparent' : headerStyles.searchIcon.backgroundColor }} />
+                            </Box>
+                        )}
+                        {!isMobile && isLoggedIn && (
                             <Box sx={headerStyles.searchBox}>
                                 <SearchIcon sx={{ color: '#6B6B6B' }} />
                                 <InputBase
@@ -100,10 +114,14 @@ const Header: React.FC = () => {
                                 <IconButton
                                     component={RouterLink}
                                     to="/write"
-                                    sx={{ ...headerStyles.iconButton, ...headerStyles.writeButton }}
+                                    sx={{ 
+                                        ...headerStyles.iconButton, 
+                                        ...headerStyles.writeButton,
+                                        marginRight: isMobile ? '0' : '25px'
+                                    }}
                                 >
                                     <EditNoteIcon sx={headerStyles.icon} />
-                                    <Typography sx={{ marginLeft: '5px' }}>Write</Typography>
+                                    {!isMobile && <Typography sx={{ marginLeft: '5px' }}>Write</Typography>}
                                 </IconButton>
                                 <IconButton
                                     component={RouterLink}
@@ -114,14 +132,16 @@ const Header: React.FC = () => {
                                 </IconButton>
                             </>
                         ) : (
-                            <Box sx={{alignItems: 'center'}}>
-                                <Typography
-                                    component={RouterLink}
-                                    to="/signin"
-                                    sx={{ color: 'black', textDecoration: 'none', px: 2, py: 2 }}
-                                >
-                                    Sign In
-                                </Typography>
+                            <Box sx={{ alignItems: 'center' }}>
+                                {!isMobile && (
+                                    <Typography
+                                        component={RouterLink}
+                                        to="/signin"
+                                        sx={{ color: 'black', textDecoration: 'none', px: 2, py: 2 }}
+                                    >
+                                        Sign In
+                                    </Typography>
+                                )}
                                 <Button
                                     component={RouterLink}
                                     to="/get-started"
