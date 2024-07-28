@@ -6,7 +6,7 @@ const SignIn: React.FC = () => {
         <GoogleOAuthProvider clientId="444179628346-uqvkfr30bd0n3k4jprdcr25oh4d2a58i.apps.googleusercontent.com">
             <div className="App">
                 <h1>React Google Login</h1>
-                <GoogleLoginButton />
+                {/* <GoogleLoginButton /> */}
             </div>
         </GoogleOAuthProvider>
     )

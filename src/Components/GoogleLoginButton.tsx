@@ -1,15 +1,15 @@
 import React from 'react';
-import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
+import { Button, Box } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
 
-// Function to get the CSRF token from cookies
 function getCookie(name: string) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
-      // Does this cookie string begin with the name we want?
       if (cookie.substring(0, name.length + 1) === (name + '=')) {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
@@ -20,41 +20,53 @@ function getCookie(name: string) {
 }
 
 const GoogleLoginButton: React.FC = () => {
-  const handleSuccess = (response: CredentialResponse) => {
-    if (response.credential) {
-      const csrfToken = getCookie('csrftoken');
+  const handleSuccess = async (tokenResponse: { access_token: string }) => {
+    const csrfToken = getCookie('csrftoken');
   
-      axios.post('http://localhost:8000/api/auth/google/', {
-        token: response.credential,
+    try {
+      const response = await axios.post('http://localhost:8000/api/auth/google/', {
+        token: tokenResponse.access_token,
       }, {
         headers: {
-          'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
+          'X-CSRFToken': csrfToken,
         }
-      })
-      .then((response) => {
-        console.log('User details:', response.data);
-        // Store the token in localStorage
-        localStorage.setItem('authToken', response.data.token);
-        // Handle successful authentication, e.g., store token, redirect, or update state
-      })
-      .catch((error) => {
-        console.error('Error:', error);
       });
-    } else {
-      console.error('Credential is undefined');
+      console.log('User details:', response.data);
+      localStorage.setItem('authToken', response.data.token);
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
-  
 
   const handleError = () => {
     console.error('Login Error');
   };
 
+  const login = useGoogleLogin({
+    onSuccess: handleSuccess,
+    onError: handleError,
+    flow: 'implicit',  // or 'token' if you prefer token-based flow
+  });
+
+  const buttonStyle: React.CSSProperties = {
+    marginBottom: '16px',
+    textTransform: 'none',
+    justifyContent: 'flex-start',
+    width: '70%',
+    borderRadius: '15px',
+    padding: '6px',
+    borderColor: 'black',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    color: 'black',
+    display: 'flex',
+    alignItems: 'center',
+  };
+
   return (
-    <GoogleLogin
-      onSuccess={handleSuccess}
-      onError={handleError}
-    />
+    <Button onClick={() => login()} variant="outlined" sx={buttonStyle} startIcon={<GoogleIcon />}>
+      <Box sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }}>Continue with Google</Box>
+    </Button>
   );
 };
 
