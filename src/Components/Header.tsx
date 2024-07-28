@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avatar } from '@mui/material';
+import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avatar, Button, useMediaQuery, useTheme } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -34,6 +34,14 @@ const headerStyles = {
         maxWidth: '300px',
         flexGrow: 1
     },
+    searchIcon: {
+        fontSize: '2rem',
+        color: '#6B6B6B',
+        backgroundColor: 'transparent',
+        borderRadius: '50%',
+        padding: '8px',
+        marginLeft: '5px'
+    },
     iconButton: {
         flexShrink: 0,
         '&:hover': {
@@ -59,10 +67,23 @@ const headerStyles = {
     },
     divider: {
         width: '100%'
+    },
+    authButton: {
+        marginLeft: '10px',
+        textTransform: 'none',
+        borderRadius: '17px',
+        '&:hover': {
+            backgroundColor: 'black'
+        }
     }
 };
 
+const isLoggedIn = true;
+
 const Header: React.FC = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <>
             <AppBar position="static" sx={headerStyles.appBar}>
@@ -71,31 +92,66 @@ const Header: React.FC = () => {
                         <RouterLink to="/" style={headerStyles.logoLink}>
                             <Typography variant='h4' sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>The Author</Typography>
                         </RouterLink>
-                        <Box sx={headerStyles.searchBox}>
-                            <SearchIcon sx={{ color: '#6B6B6B' }} />
-                            <InputBase
-                                placeholder="Search"
-                                sx={{ ml: 1, flex: 1 }}
-                                inputProps={{ 'aria-label': 'search' }}
-                            />
-                        </Box>
+                        {isLoggedIn && (
+                            <Box sx={headerStyles.searchBox} style={{ display: isMobile ? 'flex' : 'none' }}>
+                                <SearchIcon sx={{ backgroundColor: isMobile ? 'transparent' : headerStyles.searchIcon.backgroundColor }} />
+                            </Box>
+                        )}
+                        {!isMobile && isLoggedIn && (
+                            <Box sx={headerStyles.searchBox}>
+                                <SearchIcon sx={{ color: '#6B6B6B' }} />
+                                <InputBase
+                                    placeholder="Search"
+                                    sx={{ ml: 1, flex: 1 }}
+                                    inputProps={{ 'aria-label': 'search' }}
+                                />
+                            </Box>
+                        )}
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <IconButton
-                            component={RouterLink}
-                            to="/write"
-                            sx={{ ...headerStyles.iconButton, ...headerStyles.writeButton }}
-                        >
-                            <EditNoteIcon sx={headerStyles.icon} />
-                            <Typography sx={{ marginLeft: '5px' }}>Write</Typography>
-                        </IconButton>
-                        <IconButton
-                            component={RouterLink}
-                            to="/profile"
-                            sx={headerStyles.avatarButton}
-                        >
-                            <Avatar alt="Profile Picture" src="path/to/profile-pic.jpg" />
-                        </IconButton>
+                        {isLoggedIn ? (
+                            <>
+                                <IconButton
+                                    component={RouterLink}
+                                    to="/write"
+                                    sx={{ 
+                                        ...headerStyles.iconButton, 
+                                        ...headerStyles.writeButton,
+                                        marginRight: isMobile ? '0' : '25px'
+                                    }}
+                                >
+                                    <EditNoteIcon sx={headerStyles.icon} />
+                                    {!isMobile && <Typography sx={{ marginLeft: '5px' }}>Write</Typography>}
+                                </IconButton>
+                                <IconButton
+                                    component={RouterLink}
+                                    to="/profile"
+                                    sx={headerStyles.avatarButton}
+                                >
+                                    <Avatar alt="Profile Picture" src="path/to/profile-pic.jpg" />
+                                </IconButton>
+                            </>
+                        ) : (
+                            <Box sx={{ alignItems: 'center' }}>
+                                {!isMobile && (
+                                    <Typography
+                                        component={RouterLink}
+                                        to="/signin"
+                                        sx={{ color: 'black', textDecoration: 'none', px: 2, py: 2 }}
+                                    >
+                                        Sign In
+                                    </Typography>
+                                )}
+                                <Button
+                                    component={RouterLink}
+                                    to="/get-started"
+                                    variant="contained"
+                                    sx={{ ...headerStyles.authButton, backgroundColor: 'black', color: 'white', fontSize: '0.87rem' }}
+                                >
+                                    Get Started
+                                </Button>
+                            </Box>
+                        )}
                     </Box>
                 </Toolbar>
                 <Divider sx={headerStyles.divider} />
