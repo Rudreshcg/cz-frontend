@@ -1,15 +1,18 @@
 import React from 'react';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import GoogleLoginButton from './Components/GoogleLoginButton';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Header from './Components/Header';
+import Home from './Components/Home';
+import Footer from './Components/Footer';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <GoogleOAuthProvider clientId="444179628346-uqvkfr30bd0n3k4jprdcr25oh4d2a58i.apps.googleusercontent.com">
-      <div className="App">
-        <h1>React Google Login</h1>
-        <GoogleLoginButton />
-      </div>
-    </GoogleOAuthProvider>
+    <Router>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+      <Footer />
+    </Router>
   );
 }
 
