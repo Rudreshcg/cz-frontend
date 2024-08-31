@@ -1,11 +1,11 @@
 // src/Components/Header.tsx
 import React from 'react';
-import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avatar, Button, useMediaQuery, useTheme, Menu, MenuItem } from '@mui/material';
+import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avatar, Button, useMediaQuery, useTheme } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import SignInDialog from './SignInDialog';
-import SignOutDialog from './SignOutDialog';
+import ProfileMenu from './ProfileMenu';
 import { useAuth } from '../Context/AuthContext';
 
 const Header: React.FC = () => {
@@ -13,22 +13,20 @@ const Header: React.FC = () => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [openSignInDialog, setOpenSignInDialog] = React.useState(false);
-    const [openSignOutDialog, setOpenSignOutDialog] = React.useState(false);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const picture = localStorage.getItem('picture');
+    const name = localStorage.getItem('name')
 
     const handleOpenSignInDialog = () => setOpenSignInDialog(true);
     const handleCloseSignInDialog = () => setOpenSignInDialog(false);
 
-    // const handleOpenSignOutDialog = (event: React.MouseEvent<HTMLElement>) => {
-    //     setAnchorEl(event.currentTarget);
-    // };
-    // const handleCloseSignOutDialog = () => {
-    //     setAnchorEl(null);
-    // };
+    const handleOpenProfileMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-    const handleOpenSignOutDialog = () => setOpenSignOutDialog(true);
-    const handleCloseSignOutDialog = () => setOpenSignOutDialog(false);
-
-    
+    const handleCloseProfileMenu = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <>
@@ -64,7 +62,7 @@ const Header: React.FC = () => {
                                 variant='h4'
                                 sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}
                             >
-                                The Author
+                                LekhanaWorld
                             </Typography>
                         </RouterLink>
                         {isMobile && isLoggedIn && (
@@ -149,7 +147,7 @@ const Header: React.FC = () => {
                                     {!isMobile && <Typography sx={{ marginLeft: '5px' }}>Write</Typography>}
                                 </IconButton>
                                 <IconButton
-                                    onClick={handleOpenSignOutDialog}
+                                    onClick={handleOpenProfileMenu}
                                     sx={{
                                         flexShrink: 0,
                                         '&:hover': {
@@ -157,8 +155,13 @@ const Header: React.FC = () => {
                                         }
                                     }}
                                 >
-                                    <Avatar alt="Profile Picture" src="path/to/profile-pic.jpg" />
+                                    <Avatar alt={name || ''} src={picture || ''} />
                                 </IconButton>
+                                <ProfileMenu
+                                    anchorEl={anchorEl}
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleCloseProfileMenu}
+                                />
                             </>
                         ) : (
                             <Box sx={{ alignItems: 'center' }}>
@@ -191,7 +194,7 @@ const Header: React.FC = () => {
                                         color: 'white',
                                         fontSize: '0.87rem',
                                         '&:hover': {
-                                            backgroundColor: 'black'
+                                            backgroundColor: 'gray'
                                         }
                                     }}
                                 >
@@ -204,7 +207,6 @@ const Header: React.FC = () => {
                 <Divider sx={{ width: '100%' }} />
             </AppBar>
             <SignInDialog open={openSignInDialog} onClose={handleCloseSignInDialog} />
-            <SignOutDialog open={openSignOutDialog} onClose={handleCloseSignOutDialog} setOpenSignOutDialog={setOpenSignOutDialog} />
         </>
     );
 };

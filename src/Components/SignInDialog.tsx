@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import {
   Dialog,
@@ -36,7 +34,8 @@ const SignInDialog: React.FC<SignInDialogProps> = ({ open, onClose }) => {
     justifyContent: 'flex-start',
     width: '70%',
     borderRadius: '15px',
-    padding: '6px',
+    padding: '8px',
+    paddingLeft: '15px',
     borderColor: 'black',
     borderWidth: '1px',
     borderStyle: 'solid',
@@ -82,7 +81,7 @@ const SignInDialog: React.FC<SignInDialogProps> = ({ open, onClose }) => {
           fontWeight: 'bold',
         }}
       >
-        Welcome to The Author.
+        Welcome to LekhanaWorld.
       </DialogTitle>
       <DialogContent
         sx={{
@@ -96,10 +95,10 @@ const SignInDialog: React.FC<SignInDialogProps> = ({ open, onClose }) => {
           height: isMobile ? 'calc(100vh - 200px)' : 'auto',
         }}
       >
-        <Button startIcon={<GoogleIcon sx={{color: 'red'}}/>} variant="outlined" sx={buttonStyle}>
-        <Box sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }}><GoogleLoginButton /></Box>
+        <Button startIcon={<GoogleIcon/>} variant="outlined" sx={buttonStyle}>
+        <Box sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }}><GoogleLoginButton/></Box>
         </Button>
-        <Button startIcon={<FacebookIcon sx={{color: 'red'}}/>} variant="outlined" sx={buttonStyle}>
+        <Button startIcon={<FacebookIcon/>} variant="outlined" sx={buttonStyle}>
           <Box sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }}>Continue with Facebook</Box>
         </Button>
         <Button startIcon={<AppleIcon />} variant="outlined" sx={buttonStyle}>

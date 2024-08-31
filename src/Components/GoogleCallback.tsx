@@ -12,14 +12,17 @@ const GoogleCallback: React.FC = () => {
         const handleGoogleCallback = async () => {
             const query = new URLSearchParams(location.search);
             const token = query.get('token');
+            const picture = query.get('picture')
+            
 
             if (token) {
                 localStorage.setItem('token', token);
-                setIsLoggedIn(true);  // Update login state
-                navigate('/dashboard');  // Redirect to the dashboard or home
+                localStorage.setItem('picture', picture || '')
+                setIsLoggedIn(true);
+                navigate('/dashboard');
             } else {
                 console.error('No token returned from backend');
-                navigate('/login');  // Redirect to login on error
+                navigate('/login');
             }
         };
 

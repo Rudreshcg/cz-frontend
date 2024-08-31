@@ -13,9 +13,9 @@ const GoogleLoginButton = () => {
     };
 
     return (
-        <button onClick={handleGoogleLogin}>
-            Login with Google
-        </button>
+        <div onClick={handleGoogleLogin}>
+          Continue with Google
+        </div>
     );
 };
 
