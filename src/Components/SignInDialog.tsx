@@ -17,8 +17,8 @@ import AppleIcon from '@mui/icons-material/Apple';
 import EmailIcon from '@mui/icons-material/Email';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link as RouterLink } from 'react-router-dom';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import GoogleLoginButton from './GoogleLoginButton';
+import GoogleIcon from '@mui/icons-material/Google';
 
 interface SignInDialogProps {
   open: boolean;
@@ -96,9 +96,9 @@ const SignInDialog: React.FC<SignInDialogProps> = ({ open, onClose }) => {
           height: isMobile ? 'calc(100vh - 200px)' : 'auto',
         }}
       >
-        <GoogleOAuthProvider clientId="444179628346-uqvkfr30bd0n3k4jprdcr25oh4d2a58i.apps.googleusercontent.com">
-          <GoogleLoginButton />
-        </GoogleOAuthProvider>
+        <Button startIcon={<GoogleIcon sx={{color: 'red'}}/>} variant="outlined" sx={buttonStyle}>
+        <Box sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }}><GoogleLoginButton /></Box>
+        </Button>
         <Button startIcon={<FacebookIcon sx={{color: 'red'}}/>} variant="outlined" sx={buttonStyle}>
           <Box sx={{ flexGrow: 1, textAlign: 'center', color: 'black' }}>Continue with Facebook</Box>
         </Button>

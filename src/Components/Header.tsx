@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avatar, Button, useMediaQuery, useTheme } from '@mui/material';
+// src/Components/Header.tsx
+import React from 'react';
+import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avatar, Button, useMediaQuery, useTheme, Menu, MenuItem } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import SignInDialog from './SignInDialog';
+import SignOutDialog from './SignOutDialog';
+import { useAuth } from '../Context/AuthContext';
 
 const Header: React.FC = () => {
+    const { isLoggedIn } = useAuth();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-    const isLoggedIn = false;
+    const [openSignInDialog, setOpenSignInDialog] = React.useState(false);
+    const [openSignOutDialog, setOpenSignOutDialog] = React.useState(false);
 
-    const [open, setOpen] = useState(false);
+    const handleOpenSignInDialog = () => setOpenSignInDialog(true);
+    const handleCloseSignInDialog = () => setOpenSignInDialog(false);
 
-    const handleOpenDialog = () => {
-        setOpen(true);
-    };
+    // const handleOpenSignOutDialog = (event: React.MouseEvent<HTMLElement>) => {
+    //     setAnchorEl(event.currentTarget);
+    // };
+    // const handleCloseSignOutDialog = () => {
+    //     setAnchorEl(null);
+    // };
 
-    const handleCloseDialog = () => {
-        setOpen(false);
-    };
+    const handleOpenSignOutDialog = () => setOpenSignOutDialog(true);
+    const handleCloseSignOutDialog = () => setOpenSignOutDialog(false);
+
+    
 
     return (
         <>
@@ -139,8 +149,7 @@ const Header: React.FC = () => {
                                     {!isMobile && <Typography sx={{ marginLeft: '5px' }}>Write</Typography>}
                                 </IconButton>
                                 <IconButton
-                                    component={RouterLink}
-                                    to="/profile"
+                                    onClick={handleOpenSignOutDialog}
                                     sx={{
                                         flexShrink: 0,
                                         '&:hover': {
@@ -156,21 +165,23 @@ const Header: React.FC = () => {
                                 {!isMobile && (
                                     <Typography
                                         component="span"
-                                        onClick={handleOpenDialog}
-                                        sx={{ textDecoration: 'none',
-                                             px: 2, py: 2, mr: 2,
-                                             color: '#6B6B6B',
-                                             cursor: 'pointer',
-                                             '&:hover': {
-                                                 color: 'black',
-                                                 backgroundColor: 'transparent'
-                                             } }}
+                                        onClick={handleOpenSignInDialog}
+                                        sx={{
+                                            textDecoration: 'none',
+                                            px: 2, py: 2, mr: 2,
+                                            color: '#6B6B6B',
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                color: 'black',
+                                                backgroundColor: 'transparent'
+                                            }
+                                        }}
                                     >
                                         Sign In
                                     </Typography>
                                 )}
                                 <Button
-                                    onClick={handleOpenDialog}
+                                    onClick={handleOpenSignInDialog}
                                     variant="contained"
                                     sx={{
                                         marginLeft: '10px',
@@ -192,7 +203,8 @@ const Header: React.FC = () => {
                 </Toolbar>
                 <Divider sx={{ width: '100%' }} />
             </AppBar>
-            <SignInDialog open={open} onClose={handleCloseDialog} />
+            <SignInDialog open={openSignInDialog} onClose={handleCloseSignInDialog} />
+            <SignOutDialog open={openSignOutDialog} onClose={handleCloseSignOutDialog} setOpenSignOutDialog={setOpenSignOutDialog} />
         </>
     );
 };
