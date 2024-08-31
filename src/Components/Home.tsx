@@ -23,8 +23,20 @@ const Home = () => {
         <Typography variant="h6" component="p" gutterBottom>
           A place to read, write, and deepen your understanding
         </Typography>
-        <Button variant="contained" color="primary">
-          Start reading
+        <Button 
+        sx={{
+          backgroundColor: 'black',
+          color: 'white',
+          fontSize: '0.87rem',
+          textTransform: 'none',
+          px: 2,
+          py: 1,
+          '&:hover': {
+              backgroundColor: '#6B6B6B'
+          }
+        }}
+        >
+          Start Reading
         </Button>
       </Container>
     </BackgroundBox>
