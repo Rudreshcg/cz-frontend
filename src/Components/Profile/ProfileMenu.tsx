@@ -1,8 +1,10 @@
 // src/Components/ProfileMenu.tsx
 import React from 'react';
 import { Menu, MenuItem, Divider, Avatar } from '@mui/material';
-import { useAuth } from '../Context/AuthContext';
+import { useAuth } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import http, { getErrorMessage } from '../../Services/http';
+import { toast } from 'react-toastify';
 
 interface ProfileMenuProps {
     anchorEl: HTMLElement | null;
@@ -14,10 +16,17 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ anchorEl, open, onClose }) =>
     const { setIsLoggedIn } = useAuth();
     const navigate = useNavigate();
 
-    const handleSignOut = () => {
-        localStorage.removeItem('token');
-        setIsLoggedIn(false);
-        onClose();
+    const handleSignOut = async () => {
+        try {
+            await http.post('logout/');
+            setIsLoggedIn(false);
+            localStorage.removeItem('token');
+            navigate('/');
+            onClose(); 
+        } catch (error) {
+            console.error('Error during sign out:', getErrorMessage(error)); 
+            toast.error('Failed to log out. Please try again.');
+        }
     };
 
     const handleProfileClick = () => {

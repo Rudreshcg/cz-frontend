@@ -1,7 +1,7 @@
 // src/Components/GoogleCallback.tsx
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../Context/AuthContext';
+import { useAuth } from '../../Context/AuthContext';
 
 const GoogleCallback: React.FC = () => {
     const location = useLocation();
@@ -19,10 +19,9 @@ const GoogleCallback: React.FC = () => {
                 localStorage.setItem('token', token);
                 localStorage.setItem('picture', picture || '')
                 setIsLoggedIn(true);
-                navigate('/dashboard');
+                navigate('/');
             } else {
                 console.error('No token returned from backend');
-                navigate('/login');
             }
         };
 

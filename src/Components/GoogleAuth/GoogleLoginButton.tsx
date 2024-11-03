@@ -1,10 +1,10 @@
 import React from 'react';
-import axios from 'axios';
+import http from '../../Services/http';
 
 const GoogleLoginButton = () => {
     const handleGoogleLogin = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/google/login/');
+            const response = await http.get('/google/login/'); // Use the http instance here
             const { login_url } = response.data;
             window.location.href = login_url;
         } catch (error) {

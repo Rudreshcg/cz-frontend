@@ -4,9 +4,9 @@ import { AppBar, Toolbar, Divider, Box, IconButton, Typography, InputBase, Avata
 import { Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import SignInDialog from './SignInDialog';
-import ProfileMenu from './ProfileMenu';
-import { useAuth } from '../Context/AuthContext';
+import SignInDialog from '../SignIn/SignInDialog';
+import ProfileMenu from '../Profile/ProfileMenu';
+import { useAuth } from '../../Context/AuthContext';
 
 const Header: React.FC = () => {
     const { isLoggedIn } = useAuth();
@@ -141,7 +141,7 @@ const Header: React.FC = () => {
                                 >
                                     <EditNoteIcon
                                         sx={{
-                                            fontSize: '2.5rem'
+                                            fontSize: '2.2rem'
                                         }}
                                     />
                                     {!isMobile && <Typography sx={{ marginLeft: '5px' }}>Write</Typography>}

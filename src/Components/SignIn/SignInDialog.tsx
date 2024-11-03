@@ -15,7 +15,7 @@ import AppleIcon from '@mui/icons-material/Apple';
 import EmailIcon from '@mui/icons-material/Email';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link as RouterLink } from 'react-router-dom';
-import GoogleLoginButton from './GoogleLoginButton';
+import GoogleLoginButton from '../GoogleAuth/GoogleLoginButton';
 import GoogleIcon from '@mui/icons-material/Google';
 
 interface SignInDialogProps {

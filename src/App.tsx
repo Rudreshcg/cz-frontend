@@ -1,24 +1,22 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Header from './Components/Header';
-import Home from './Components/Home';
-import Footer from './Components/Footer';
-import GoogleCallback from './Components/GoogleCallback';
+import { BrowserRouter as Router } from 'react-router-dom';
+import Header from './Components/HeaderFooter/Header';
+import Footer from './Components/HeaderFooter/Footer';
+import AppRoutes from './Routes/AppRoutes';
 import { AuthProvider } from './Context/AuthContext';
+import { ToastContainer } from 'react-toastify';
+
 
 const App = () => {
   return (
     <AuthProvider>
-    <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/google/callback" element={<GoogleCallback />} />
-      </Routes>
-      <Footer />
-    </Router>
+      <Router>
+        <Header />
+        <AppRoutes />
+        <Footer />
+      </Router>
+      <ToastContainer />
     </AuthProvider>
-
   );
 }
 
